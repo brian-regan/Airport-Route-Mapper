@@ -1,0 +1,17 @@
+{
+    "contents" : "## create hubs and link them all with each other\nallHubs <- c(\"STN\", \"ALC\", \"WMI\", \"CHQ\", \"CIA\", \"HHN\", \"BGY\", \"ACE\", \"MRS\", \"KRK\", \"BUD\", \"MLA\", \"KUN\", \"TMP\", \"RYG\", \"SXF\", \"LRH\", \"OPO\")\nedges <- data.frame(\"Source\" = character(), \"Target\" = character(), stringsAsFactors = FALSE)\n\njoinHubs <- function(hubs){\n  len <- length(hubs)\n  c <- 1\n  for(i in (1:(len-1))){\n    for(j in ((i+1):len)){\n      edges[c,] <- c(hubs[i],hubs[j])\n      c <- c + 1\n    }\n  }\n  return(edges)\n}\n\n## calculate distance between two airports\ndist <- function(s, t){\n  LatLong <- read.csv(\"LatLong.csv\")\n  x1 <- LatLong[which(LatLong$FAA == s),\"Latitude\"]\n  y1 <- LatLong[which(LatLong$FAA == s),\"Longtitude\"]\n  x2 <- LatLong[which(LatLong$FAA == t),\"Latitude\"]\n  y2 <- LatLong[which(LatLong$FAA == t),\"Longtitude\"]\n  return(as.numeric(sqrt((x1 - x2)^2 + (y1-y2)^2))) ## CHECK THIS WITH CALCULATOR\n}\n\n\n## pair an outlier airport with nearest hub\nnearest <- function(o, hubs){\n  current <- hubs[1]\n  for(hub in hubs){\n    if(dist(o, hub) > dist(o, current)){\n      ## do nothing\n    } else {\n      current <- hub\n    }\n  }\n  return(c(o, current))\n}\n\n## remove hubs from list of airports\nrem <- function(hubs, airports = read.csv(\"ryanairAirports.csv\")){\n  airports <- airports[1]\n  for(hub in hubs){\n    airports <- airports[airports != hub]\n  }\n  return(airports)\n}\n\n## pair every outlier with nearest hub\ngo <- function(hubs = allHubs, outliers = rem(allHubs), edges = joinHubs(allHubs)){\n  c <- length(edges[,1]) + 1\n  for(o in outliers){\n    print(nearest(o, hubs))\n    edges[c,] <- nearest(o, hubs)\n    c <- c + 1\n  }\n  write.csv(edges, \"brianAirRoutes.csv\")\n  return(edges)\n}\n\n## edit so that hubs is input each time\n## combine airports in London (and similar situations)?\n## calculate rough runtime and try to optimize?",
+    "created" : 1434484577018.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1726883793",
+    "id" : "F95C73B3",
+    "lastKnownWriteTime" : 1434554895,
+    "path" : "C:/Users/Jack/Desktop/Airports/sol.R",
+    "project_path" : "sol.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : true,
+    "type" : "r_source"
+}

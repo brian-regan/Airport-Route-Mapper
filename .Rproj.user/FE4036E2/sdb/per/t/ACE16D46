@@ -1,0 +1,17 @@
+{
+    "contents" : "adjMatrix <- function(){\n  names <- read.csv(\"ryanairAirports.csv\")\n  len = length(names[,1])\n  a <- matrix(0, nrow = len, ncol = len)\n  rownames(a) <- names[,1]\n  colnames(a) <- names[,1]\n  pairs <- unique(read.csv(\"brianAirRoutes.csv\", stringsAsFactors = FALSE))\n  for(i in 1:length(pairs[,1])){\n    a[pairs[i,2],pairs[i,1]] <- -1\n    a[pairs[i,1],pairs[i,2]] <- -1\n    a[pairs[i,1],pairs[i,1]] <- length(pairs[pairs == pairs[i,1]])\n    a[pairs[i,2],pairs[i,2]] <- length(pairs[pairs == pairs[i,2]])\n  }\n  return(a)\n}",
+    "created" : 1434534787396.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3960436090",
+    "id" : "ACE16D46",
+    "lastKnownWriteTime" : 1434625619,
+    "path" : "C:/Users/Jack/Desktop/Airports/adjMatrix.R",
+    "project_path" : "adjMatrix.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : true,
+    "type" : "r_source"
+}
